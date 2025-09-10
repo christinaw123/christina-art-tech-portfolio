@@ -1,6 +1,6 @@
-# Christina Wong - Technical Artist Portfolio
+# Christina Wong - Portfolio Website
 
-A modern, responsive portfolio website showcasing technical art projects, VR/AR development, and pipeline tools.
+A portfolio website showcasing web apps, VR/AR development, and other info.
 
 ## Local Development
 1. Clone the repository
