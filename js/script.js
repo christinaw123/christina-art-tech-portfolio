@@ -220,58 +220,103 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // PDF Modal functionality
-const pdfModal = document.getElementById('pdfModal');
-const pdfViewer = document.getElementById('pdfViewer');
-const pdfTriggers = document.querySelectorAll('.pdf-popup-trigger');
+    const pdfModal = document.getElementById('pdfModal');
+    const pdfViewer = document.getElementById('pdfViewer');
+    const pdfTriggers = document.querySelectorAll('.pdf-popup-trigger');
 
-if (pdfModal && pdfViewer && pdfTriggers.length > 0) {
-    const closeBtn = pdfModal.querySelector('.close');
-    
-    // Open PDF modal
-    pdfTriggers.forEach(trigger => {
-        trigger.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('PDF trigger clicked'); // Debug log
-            const pdfPath = this.getAttribute('data-pdf');
-            console.log('PDF path:', pdfPath); // Debug log
-            pdfViewer.src = pdfPath;
-            pdfModal.style.display = 'flex';
+    if (pdfModal && pdfViewer && pdfTriggers.length > 0) {
+        const closeBtn = pdfModal.querySelector('.close');
+        
+        // Open PDF modal
+        pdfTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('PDF trigger clicked'); // Debug log
+                const pdfPath = this.getAttribute('data-pdf');
+                console.log('PDF path:', pdfPath); // Debug log
+                pdfViewer.src = pdfPath;
+                pdfModal.style.display = 'flex';
+            });
         });
-    });
-    
-    // Close PDF modal
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            console.log('PDF modal close clicked'); // Debug log
-            pdfModal.style.display = 'none';
-            pdfViewer.src = ''; // Clear the iframe
+        
+        // Close PDF modal
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                console.log('PDF modal close clicked'); // Debug log
+                pdfModal.style.display = 'none';
+                pdfViewer.src = ''; // Clear the iframe
+            });
+        }
+        
+        // Close on outside click
+        pdfModal.addEventListener('click', function(e) {
+            if (e.target === pdfModal) {
+                console.log('PDF modal outside click'); // Debug log
+                pdfModal.style.display = 'none';
+                pdfViewer.src = '';
+            }
+        });
+        
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && pdfModal.style.display === 'flex') {
+                console.log('PDF modal escape key'); // Debug log
+                pdfModal.style.display = 'none';
+                pdfViewer.src = '';
+            }
+        });
+    } else {
+        console.error('PDF modal elements not found:', {
+            pdfModal: !!pdfModal,
+            pdfViewer: !!pdfViewer,
+            pdfTriggers: pdfTriggers.length
         });
     }
-    
-    // Close on outside click
-    pdfModal.addEventListener('click', function(e) {
-        if (e.target === pdfModal) {
-            console.log('PDF modal outside click'); // Debug log
-            pdfModal.style.display = 'none';
-            pdfViewer.src = '';
-        }
+
+    // Google Doc toggle functionality
+    // Google Doc toggle functionality
+    const toggleBtn = document.getElementById('toggleDocBtn');
+    const docSection = document.getElementById('docSection');
+    const docFrame = document.getElementById('googleDocFrame');
+    let isDocLoaded = false;
+
+    console.log('Elements found:', {
+        toggleBtn: !!toggleBtn,
+        docSection: !!docSection,
+        docFrame: !!docFrame
     });
-    
-    // Close on escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && pdfModal.style.display === 'flex') {
-            console.log('PDF modal escape key'); // Debug log
-            pdfModal.style.display = 'none';
-            pdfViewer.src = '';
-        }
-    });
-} else {
-    console.error('PDF modal elements not found:', {
-        pdfModal: !!pdfModal,
-        pdfViewer: !!pdfViewer,
-        pdfTriggers: pdfTriggers.length
-    });
-}
+
+    if (toggleBtn && docSection) {
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Toggle clicked!');
+            console.log('Current classes:', docSection.className);
+            
+            if (docSection.classList.contains('show')) {
+                // Hide the document
+                docSection.classList.remove('show');
+                toggleBtn.innerHTML = '<i class="fas fa-file-alt"></i>view project report';
+                console.log('Hiding document');
+            } else {
+                // Show the document
+                docSection.classList.add('show');
+                toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i>hide project report';
+                console.log('Showing document');
+                
+                // Load iframe content only when first shown (for performance)
+                if (!isDocLoaded && docFrame) {
+                    const docSrc = docFrame.getAttribute('data-src');
+                    console.log('Loading iframe with src:', docSrc);
+                    if (docSrc) {
+                        docFrame.src = docSrc;
+                        isDocLoaded = true;
+                    }
+                }
+            }
+        });
+    }
+
+
 
     // Current modal state
     let currentCollection = [];

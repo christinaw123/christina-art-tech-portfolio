@@ -1146,3 +1146,70 @@ button:focus,
     }
 }
 
+/* google doc */
+.doc-toggle-btn {
+    background: transparent !important;
+    border: 1px solid #a169b1 !important;
+    cursor: pointer;
+}
+
+.doc-toggle-btn:hover {
+    background: #a169b1 !important;
+    color: white !important;
+}
+
+.doc-section {
+    margin-top: 40px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.doc-section.show {
+    opacity: 1;
+    max-height: 800px;
+    display: block !important;
+}
+
+.doc-container {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+}
+
+.doc-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.doc-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.doc-header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.doc-embed {
+    position: relative;
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .doc-embed iframe {
+        height: 400px;
+    }
+    
+    .doc-container {
+        padding: 20px;
+    }
+}
