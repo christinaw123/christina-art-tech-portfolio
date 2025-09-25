@@ -219,6 +219,60 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     };
 
+    // PDF Modal functionality
+const pdfModal = document.getElementById('pdfModal');
+const pdfViewer = document.getElementById('pdfViewer');
+const pdfTriggers = document.querySelectorAll('.pdf-popup-trigger');
+
+if (pdfModal && pdfViewer && pdfTriggers.length > 0) {
+    const closeBtn = pdfModal.querySelector('.close');
+    
+    // Open PDF modal
+    pdfTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('PDF trigger clicked'); // Debug log
+            const pdfPath = this.getAttribute('data-pdf');
+            console.log('PDF path:', pdfPath); // Debug log
+            pdfViewer.src = pdfPath;
+            pdfModal.style.display = 'flex';
+        });
+    });
+    
+    // Close PDF modal
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            console.log('PDF modal close clicked'); // Debug log
+            pdfModal.style.display = 'none';
+            pdfViewer.src = ''; // Clear the iframe
+        });
+    }
+    
+    // Close on outside click
+    pdfModal.addEventListener('click', function(e) {
+        if (e.target === pdfModal) {
+            console.log('PDF modal outside click'); // Debug log
+            pdfModal.style.display = 'none';
+            pdfViewer.src = '';
+        }
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && pdfModal.style.display === 'flex') {
+            console.log('PDF modal escape key'); // Debug log
+            pdfModal.style.display = 'none';
+            pdfViewer.src = '';
+        }
+    });
+} else {
+    console.error('PDF modal elements not found:', {
+        pdfModal: !!pdfModal,
+        pdfViewer: !!pdfViewer,
+        pdfTriggers: pdfTriggers.length
+    });
+}
+
     // Current modal state
     let currentCollection = [];
     let currentImageIndex = 0;
